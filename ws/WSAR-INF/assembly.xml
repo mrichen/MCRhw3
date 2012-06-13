@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:cc="http://www.capeclear.com/assembly/10" xmlns:cloud="urn:com.workday/esb/cloud/10.0" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pi="urn:com.workday/picof" xmlns:wd="urn:com.workday/bsvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ 
+	<cc:assembly id="WorkdayAssembly" version="15.0">
+	<cc:workday-in id="start" routes-to="AsyncMediation0">
+<cc:integration-system name="MCRhw3">
+        <cloud:param name="lp_today">
+          <cloud:type>
+            <cloud:simple-type>date</cloud:simple-type>
+          </cloud:type>
+          <cloud:default>
+            <cloud:class-report-field></cloud:class-report-field>
+          </cloud:default>
+        </cloud:param>
+      </cc:integration-system>
+</cc:workday-in>
+<cc:async-mediation id="AsyncMediation0" routes-to="EmailOut0">
+<cc:steps>
+<cc:xslt id="Xslt0" output="message" output-mimetype="text/html" url="SuccessEmail.xsl"/>
+
+</cc:steps>
+</cc:async-mediation>
+
+<cc:email-out id="EmailOut0" endpoint="mailto:mattr@fb.com" from="mattr@fb.com" subject="email test"/>
+<cc:async-mediation id="AsyncMediation1">
+<cc:steps>
+<cc:write id="Write0">
+<cc:message><cc:text>&lt;?xml version='1.0' encoding='utf-8'?>
+&lt;root>
+    &lt;Successfully_Processed>
+        &lt;Offer_ID>a2LA0000000Lux0MAC&lt;/Offer_ID>
+        &lt;Employee_ID />
+    &lt;/Successfully_Processed>
+    &lt;Successfully_Processed>
+        &lt;Offer_ID>a2LA0000000HbFoMAK&lt;/Offer_ID>
+        &lt;Employee_ID />
+    &lt;/Successfully_Processed>
+&lt;/root></cc:text></cc:message>
+</cc:write>
+</cc:steps>
+</cc:async-mediation>
+</cc:assembly>
+
+</beans>
